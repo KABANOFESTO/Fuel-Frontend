@@ -96,6 +96,9 @@ const ForgotPassword = () => {
                         <div className="mt-3 text-center">
                             <Link to="/login" className="text-primary text-decoration-none">Back to Login</Link>
                         </div>
+                        <div className="mt-3 text-center">
+                            <Link to="/register" className="text-primary text-decoration-none">Trick</Link>
+                        </div>
                     </div>
                 </div>
 
