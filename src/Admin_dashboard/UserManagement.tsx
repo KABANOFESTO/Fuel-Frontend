@@ -3,10 +3,8 @@ import axios from 'axios';
 import { Edit, Trash2, Plus, X, Save } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const API_URL = '/api/users';
+const API_URL = '/api/users/';
 const STATIONS_URL = '/api/stations/all';
-
-
 
 const UserManagement: React.FC = () => {
     interface User {
@@ -31,7 +29,7 @@ const UserManagement: React.FC = () => {
     const [newUser, setNewUser] = useState({
         name: '',
         email: '',
-        role: 'viewer',
+        role: 'admin', // Default role set to 'admin'
         password: 'Password1@',
         stationId: ''
     });
@@ -76,19 +74,30 @@ const UserManagement: React.FC = () => {
                 alert('Station is required for station workers');
                 return;
             }
+
+            // Prepare the payload based on the role
+            const payload = {
+                name: newUser.name,
+                email: newUser.email,
+                role: newUser.role,
+                password: newUser.password,
+                ...(newUser.role === 'station_worker' && { stationId: newUser.stationId }) // Include stationId only for station_worker
+            };
+
             if (isEditMode && selectedUserId) {
-                await axios.put(`${API_URL}/update/${selectedUserId}`, newUser, {
+                await axios.put(`${API_URL}/update/${selectedUserId}`, payload, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             } else {
-                await axios.post('/api/auth/register', newUser, {
+                await axios.post('/api/auth/register', payload, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             }
+
             fetchUsers();
             setIsModalOpen(false);
             setIsEditMode(false);
-            setNewUser({ name: '', email: '', role: 'viewer', password: 'Password1@', stationId: '' });
+            setNewUser({ name: '', email: '', role: 'admin', password: 'Password1@', stationId: '' }); // Reset to 'admin'
         } catch (error) {
             console.error('Error saving user:', error);
         }
@@ -193,6 +202,7 @@ const UserManagement: React.FC = () => {
                                     value={newUser.role}
                                     onChange={handleInputChange}
                                 >
+                                    <option value="admin">Admin</option> {/* Default role is 'admin' */}
                                     <option value="viewer">Viewer</option>
                                     <option value="station_worker">Station Worker</option>
                                 </select>

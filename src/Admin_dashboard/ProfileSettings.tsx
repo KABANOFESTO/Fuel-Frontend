@@ -82,7 +82,7 @@ const ProfileSettings = () => {
             }
 
             axios.put(
-                `http://185.203.240.200:5000/api/users/update/${userId}`,
+                `/api/users/update/${userId}`,
                 formData,
                 {
                     headers: {
@@ -111,7 +111,7 @@ const ProfileSettings = () => {
             }
 
             await axios.put(
-                'http://185.203.240.200:5000/api/auth/change-password',
+                '/api/auth/change-password',
                 {
                     oldPassword,
                     newPassword

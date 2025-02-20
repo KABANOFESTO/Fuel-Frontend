@@ -6,7 +6,7 @@ import { jwtDecode } from 'jwt-decode'; // Corrected import
 
 // Create axios instance with default config
 const api = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: '/',
     headers: {
         'Content-Type': 'application/json'
     },
@@ -43,7 +43,7 @@ const LoginPage = () => {
         setError('');
 
         try {
-            const response = await api.post<TokenResponse>('/api/auth/login', formData);
+            const response = await api.post<TokenResponse>('api/auth/login', formData);
             console.log('Full Response:', response);
 
             // Check if accessToken is present
