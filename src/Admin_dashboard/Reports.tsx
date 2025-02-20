@@ -68,7 +68,7 @@ const Report = () => {
         const fetchFuelTransactions = async () => {
             try {
                 const accessToken = localStorage.getItem('accessToken');
-                const response = await axios.get('http://localhost:5000/api/fuel-transactions', {
+                const response = await axios.get('/api/fuel-transactions', {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }

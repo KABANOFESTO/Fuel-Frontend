@@ -22,7 +22,6 @@ import Blayout from './Boss_dashboard/Blayout';
 import Breport from './Boss_dashboard/Breports';
 import Profile from './Boss_dashboard/Bprofile';
 import ResetPassword from './pages/ResetPassword';
-import RegisterForm from './pages/Register';
 
 
 
@@ -74,7 +73,6 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/forgot" element={<ForgotPassword />} />
-      <Route path="/register" element={<RegisterForm />} />
 
 
       <Route

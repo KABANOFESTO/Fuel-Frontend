@@ -33,7 +33,7 @@ const Profile = () => {
                 const decodedToken = jwtDecode<DecodedToken>(token);
                 setUserId(decodedToken.id);
 
-                const response = await axios.get(`http://localhost:5000/api/users/${decodedToken.id}`, {
+                const response = await axios.get(`/api/users/${decodedToken.id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -100,7 +100,7 @@ const Profile = () => {
             }
 
             await axios.put(
-                'http://localhost:5000/api/auth/change-password',
+                '/api/auth/change-password',
                 {
                     oldPassword,
                     newPassword

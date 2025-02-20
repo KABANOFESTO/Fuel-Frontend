@@ -46,7 +46,7 @@ const VehicleManagement: React.FC = () => {
     const fetchVehicles = async () => {
         try {
             console.log('Fetching vehicles with config:', getConfig());
-            const response = await axios.get('http://localhost:5000/api/vehicles/all', getConfig());
+            const response = await axios.get('/api/vehicles/all', getConfig());
             console.log('Fetched vehicles:', response.data);
             setVehicles(response.data);
         } catch (error) {
@@ -63,7 +63,7 @@ const VehicleManagement: React.FC = () => {
         try {
             console.log('Searching vehicle with plate:', searchPlate);
             const response = await axios.get(
-                `http://localhost:5000/api/vehicles/plate/${searchPlate}`,
+                `/api/vehicles/plate/${searchPlate}`,
                 getConfig()
             );
             console.log('Search result:', response.data);
@@ -113,14 +113,14 @@ const VehicleManagement: React.FC = () => {
 
             if (editingVehicle?.id) {
                 const response = await axios.put(
-                    `http://localhost:5000/api/vehicles/update/${editingVehicle.id}`,
+                    `/api/vehicles/update/${editingVehicle.id}`,
                     payload,
                     getConfig()
                 );
                 console.log('Update response:', response.data);
             } else {
                 const response = await axios.post(
-                    'http://localhost:5000/api/vehicles/register',
+                    '/api/vehicles/register',
                     payload,
                     getConfig()
                 );
@@ -157,7 +157,7 @@ const VehicleManagement: React.FC = () => {
             try {
                 console.log('Deleting vehicle:', id);
                 await axios.delete(
-                    `http://localhost:5000/api/vehicles/delete/${id}`,
+                    `/api/vehicles/delete/${id}`,
                     getConfig()
                 );
                 console.log('Vehicle deleted successfully');

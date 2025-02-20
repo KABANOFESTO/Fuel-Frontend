@@ -27,7 +27,7 @@ interface AuthState {
 }
 
 // API configuration
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = '/';
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
     headers: {
@@ -199,7 +199,7 @@ const StationManagement: React.FC = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axiosInstance.post('/stations/create', formData);
+            const response = await axiosInstance.post('stations/create', formData);
             setStations([...stations, response.data]);
             setIsModalOpen(false);
             resetForm();
@@ -217,7 +217,7 @@ const StationManagement: React.FC = () => {
         setLoading(true);
         try {
             const response = await axiosInstance.put(
-                `/stations/update/${currentStation.id}`,
+                `stations/update/${currentStation.id}`,
                 formData
             );
             setStations(stations.map(station =>
@@ -239,7 +239,7 @@ const StationManagement: React.FC = () => {
 
         setLoading(true);
         try {
-            await axiosInstance.delete(`/stations/delete/${id}`);
+            await axiosInstance.delete(`stations/delete/${id}`);
             setStations(stations.filter(station => station.id !== id));
         } catch (err) {
             handleError(err);
@@ -252,7 +252,7 @@ const StationManagement: React.FC = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await axiosInstance.post('/fuel-prices/setPrice', priceFormData);
+            await axiosInstance.post('fuel-prices/setPrice', priceFormData);
             setIsPriceModalOpen(false);
             resetPriceForm();
         } catch (err) {

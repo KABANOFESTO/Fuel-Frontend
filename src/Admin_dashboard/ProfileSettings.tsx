@@ -33,7 +33,7 @@ const ProfileSettings = () => {
                 const decodedToken = jwtDecode<DecodedToken>(token);
                 setUserId(decodedToken.id);
 
-                const response = await axios.get(`http://localhost:5000/api/users/${decodedToken.id}`, {
+                const response = await axios.get(`/api/users/${decodedToken.id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -76,21 +76,21 @@ const ProfileSettings = () => {
             const formData = new FormData();
             formData.append('name', name);
             formData.append('email', email);
-            
+
             if (selectedFile) {
                 formData.append('picture', selectedFile);
             }
 
-            // const response = await axios.put(
-            //     `http://localhost:5000/api/users/update/${userId}`,
-            //     formData,
-            //     {
-            //         headers: {
-            //             'Authorization': `Bearer ${token}`,
-            //             'Content-Type': 'multipart/form-data'
-            //         }
-            //     }
-            // );
+            axios.put(
+                `http://185.203.240.200:5000/api/users/update/${userId}`,
+                formData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
 
             setSuccess('Profile updated successfully!');
             setError('');
@@ -111,7 +111,7 @@ const ProfileSettings = () => {
             }
 
             await axios.put(
-                'http://localhost:5000/api/auth/change-password',
+                'http://185.203.240.200:5000/api/auth/change-password',
                 {
                     oldPassword,
                     newPassword
@@ -148,9 +148,9 @@ const ProfileSettings = () => {
 
             {editingPicture && (
                 <div className="mt-3">
-                    <input 
-                        type="file" 
-                        className="form-control" 
+                    <input
+                        type="file"
+                        className="form-control"
                         onChange={(e) => {
                             if (e.target.files && e.target.files[0]) {
                                 setSelectedFile(e.target.files[0]);

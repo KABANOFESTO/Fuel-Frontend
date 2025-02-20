@@ -34,7 +34,7 @@ const RefuelingDashboard = () => {
             }
 
             const priceResponse = await axios.get(
-                'http://localhost:5000/api/fuel-prices/getfuelprice',
+                '/api/fuel-prices/getfuelprice',
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -79,7 +79,7 @@ const RefuelingDashboard = () => {
 
             // First, fetch vehicle details
             const vehicleResponse = await axios.get(
-                `http://localhost:5000/api/vehicles/plate/${plateNumber}`,
+                `/api/vehicles/plate/${plateNumber}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -98,7 +98,7 @@ const RefuelingDashboard = () => {
 
             // Then fetch transaction history
             const transactionsResponse = await axios.get(
-                `http://localhost:5000/api/fuel-transactions/vehicle/${plateNumber}`,
+                `/api/fuel-transactions/vehicle/${plateNumber}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -151,7 +151,7 @@ const RefuelingDashboard = () => {
             }
 
             axios.post<TransactionResponse>(
-                'http://localhost:5000/api/fuel-transactions/record',
+                '/api/fuel-transactions/record',
                 {
                     stationId: selectedStation,
                     vehiclePlateNumber: plateNumber,

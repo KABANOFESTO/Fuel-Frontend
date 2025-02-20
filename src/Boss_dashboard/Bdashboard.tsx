@@ -85,7 +85,7 @@ const Bdashboard = () => {
             const accessToken = localStorage.getItem('accessToken');
 
             // Fetch fuel transactions
-            const fuelTransactionsResponse = await fetch('http://localhost:5000/api/fuel-transactions', {
+            const fuelTransactionsResponse = await fetch('/api/fuel-transactions', {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 }
@@ -94,7 +94,7 @@ const Bdashboard = () => {
             setData(fuelTransactions);
 
             // Fetch total vehicles
-            const vehiclesResponse = await fetch('http://localhost:5000/api/vehicles/all', {
+            const vehiclesResponse = await fetch('/api/vehicles/all', {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 }
@@ -103,7 +103,7 @@ const Bdashboard = () => {
             setTotalVehicles(vehiclesData.length);
 
             // Fetch total drivers
-            const driversResponse = await fetch('http://localhost:5000/api/drivers/all', {
+            const driversResponse = await fetch('/api/drivers/all', {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 }

@@ -48,7 +48,7 @@ const DriverManagement: React.FC = () => {
 
     const fetchVehicles = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/vehicles/all', getConfig());
+            const response = await axios.get('/api/vehicles/all', getConfig());
             setVehicles(response.data);
         } catch (error) {
             console.error('Error fetching vehicles:', error);
@@ -57,7 +57,7 @@ const DriverManagement: React.FC = () => {
 
     const fetchDrivers = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/drivers/all', getConfig());
+            const response = await axios.get('/api/drivers/all', getConfig());
             setDrivers(response.data);
         } catch (error) {
             console.error('Error fetching drivers:', error);
@@ -108,20 +108,20 @@ const DriverManagement: React.FC = () => {
                 licenseNumber: formData.licenseNumber,
                 vehicleId: selectedVehicle.id,
                 email: formData.email?.trim(),
-                PhoneNumber: formData.phone?.trim(),
+                phoneNumber: formData.phone?.trim(), // Ensure phone is included in the payload
                 status: formData.status
             };
 
             if (editingDriver) {
                 await axios.put(
-                    `http://localhost:5000/api/drivers/update/${editingDriver.licenseNumber}`,
+                    `/api/drivers/update/${editingDriver.licenseNumber}`,
                     payload,
                     getConfig()
                 );
                 alert('Driver updated successfully!');
             } else {
                 await axios.post(
-                    'http://localhost:5000/api/drivers/register',
+                    '/api/drivers/register',
                     payload,
                     getConfig()
                 );
@@ -147,12 +147,11 @@ const DriverManagement: React.FC = () => {
         }
     };
 
-    // Existing handlers remain the same
     const handleDelete = async (id: number) => {
         if (window.confirm('Are you sure you want to delete this driver?')) {
             try {
                 await axios.delete(
-                    `http://localhost:5000/api/drivers/delete/${id}`,
+                    `/api/drivers/delete/${id}`,
                     getConfig()
                 );
                 fetchDrivers();

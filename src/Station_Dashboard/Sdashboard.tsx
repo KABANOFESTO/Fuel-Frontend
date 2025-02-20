@@ -38,7 +38,7 @@ const DashboardMain: React.FC = () => {
         const decodedToken: { id: string } = jwtDecode(accessToken);
         const userId = decodedToken.id;
 
-        const response = await fetch(`http://localhost:5000/api/fuel-transactions/${userId}`, {
+        const response = await fetch(`/api/fuel-transactions/${userId}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -55,7 +55,7 @@ const DashboardMain: React.FC = () => {
           data.map(async (transaction) => {
             try {
               const vehicleResponse = await axios.get(
-                `http://localhost:5000/api/vehicles/${transaction.vehicleId}`,
+                `/api/vehicles/${transaction.vehicleId}`,
                 {
                   headers: { Authorization: `Bearer ${accessToken}` }
                 }

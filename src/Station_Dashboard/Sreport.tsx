@@ -54,7 +54,7 @@ const ReportMain = () => {
             if (!token) throw new Error('No access token found');
 
             // Fetch transactions
-            const response = await axios.get(`http://localhost:5000/api/fuel-transactions/${userId}`, {
+            const response = await axios.get(`/api/fuel-transactions/${userId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -62,13 +62,13 @@ const ReportMain = () => {
             const transactionsWithDetails = await Promise.all(
                 response.data.map(async (t: Transaction) => {
                     const [stationResponse, vehicleResponse, driverResponse] = await Promise.all([
-                        axios.get(`http://localhost:5000/api/stations/${t.stationId}`, {
+                        axios.get(`/api/stations/${t.stationId}`, {
                             headers: { Authorization: `Bearer ${token}` }
                         }),
-                        axios.get(`http://localhost:5000/api/vehicles/${t.vehicleId}`, {
+                        axios.get(`/api/vehicles/${t.vehicleId}`, {
                             headers: { Authorization: `Bearer ${token}` }
                         }),
-                        axios.get(`http://localhost:5000/api/drivers/${t.driverId}`, {
+                        axios.get(`/api/drivers/${t.driverId}`, {
                             headers: { Authorization: `Bearer ${token}` }
                         }),
                     ]);

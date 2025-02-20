@@ -36,7 +36,7 @@ const Sidebar: React.FC = () => {
                 const decoded = jwtDecode(token) as DecodedToken;
                 const userId = decoded.id;
 
-                const response = await fetch(`http://localhost:5000/api/users/${userId}`, {
+                const response = await fetch(`/api/users/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

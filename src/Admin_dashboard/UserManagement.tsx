@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Edit, Trash2, Plus, X, Save } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const API_URL = 'http://localhost:5000/api/users';
-const STATIONS_URL = 'http://localhost:5000/api/stations/all';
+const API_URL = '/api/users';
+const STATIONS_URL = '/api/stations/all';
 
 
 
@@ -81,7 +81,7 @@ const UserManagement: React.FC = () => {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             } else {
-                await axios.post('http://localhost:5000/api/auth/register', newUser, {
+                await axios.post('/api/auth/register', newUser, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             }

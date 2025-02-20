@@ -53,7 +53,7 @@ const ResetPassword = () => {
 
         try {
             axios.post(
-                `http://localhost:5000/api/auth/reset-password?token=${token}`,
+                `/api/auth/reset-password?token=${token}`,
                 {
                     newPassword: formData.password
                 },

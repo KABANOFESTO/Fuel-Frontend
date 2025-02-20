@@ -33,7 +33,7 @@ const Sidebar: React.FC = () => {
 
             const decodedToken = jwtDecode<DecodedToken>(token);
 
-            const response = await axios.get(`http://localhost:5000/api/users/${decodedToken.id}`, {
+            const response = await axios.get(`/api/users/${decodedToken.id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

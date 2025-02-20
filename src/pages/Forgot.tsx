@@ -17,7 +17,7 @@ const ForgotPassword = () => {
 
         try {
             axios.post(
-                'http://localhost:5000/api/auth/forgot-password',
+                '/api/auth/forgot-password',
                 { email },
                 {
                     headers: {

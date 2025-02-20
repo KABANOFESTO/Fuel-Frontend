@@ -53,7 +53,7 @@ const VehicleRefuelingValidation: React.FC = () => {
 
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/fuel-transactions/vehicle/${vehicleNumber}`,
+                `/api/fuel-transactions/vehicle/${vehicleNumber}`,
                 getConfig()
             );
             const data = response.data;

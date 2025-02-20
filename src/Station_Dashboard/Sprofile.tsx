@@ -33,7 +33,7 @@ const ProfileSettings = () => {
                 const decodedToken = jwtDecode<DecodedToken>(token);
                 setUserId(decodedToken.id);
 
-                const response = await axios.get(`http://localhost:5000/api/users/${decodedToken.id}`, {
+                const response = await axios.get(`/api/users/${decodedToken.id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -82,7 +82,7 @@ const ProfileSettings = () => {
             }
 
             axios.put(
-                `http://localhost:5000/api/users/update/${userId}`,
+                `/api/users/update/${userId}`,
                 formData,
                 {
                     headers: {
@@ -111,7 +111,7 @@ const ProfileSettings = () => {
             }
 
             await axios.put(
-                'http://localhost:5000/api/auth/change-password',
+                '/api/auth/change-password',
                 {
                     oldPassword,
                     newPassword
