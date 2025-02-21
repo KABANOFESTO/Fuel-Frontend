@@ -81,7 +81,7 @@ const ProfileSettings = () => {
                 formData.append('picture', selectedFile);
             }
 
-            axios.put(
+            await axios.put(
                 `/api/users/update/${userId}`,
                 formData,
                 {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search} from 'lucide-react';
+import { Search,  } from 'lucide-react';
 
 interface HeaderProps {
   onSearch: (query: string) => void; // Callback to pass search query to parent

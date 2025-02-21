@@ -77,7 +77,7 @@ const Dashboard = () => {
     month: string;
     value: number;
   }
-
+  
   const [chartData, setChartData] = useState<ChartData[]>([]);
 
   useEffect(() => {

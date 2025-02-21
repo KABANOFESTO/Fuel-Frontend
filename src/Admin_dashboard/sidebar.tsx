@@ -19,7 +19,7 @@ interface User {
     id: number;
     name: string;
     picture?: string;
-    role: string; 
+    role: string;
 }
 
 const Sidebar: React.FC = () => {

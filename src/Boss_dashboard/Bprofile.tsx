@@ -81,6 +81,17 @@ const Profile = () => {
                 formData.append('picture', selectedFile);
             }
 
+            await axios.put(
+                `/api/users/update/${userId}`,
+                formData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+
             setSuccess('Profile updated successfully!');
             setError('');
             setProfilePicture(URL.createObjectURL(selectedFile!)); // Update profile picture preview
