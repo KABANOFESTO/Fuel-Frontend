@@ -76,7 +76,7 @@ const RefuelingDashboard = () => {
 
                 // Fetch user data
                 const userResponse = await axios.get<UserData>(
-                    `http://localhost:5000/api/users/${decodedToken.id}`,
+                    `/api/users/${decodedToken.id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -90,7 +90,7 @@ const RefuelingDashboard = () => {
 
                 // Fetch station name using stationId
                 const stationResponse = await axios.get(
-                    `http://localhost:5000/api/stations/${userResponse.data.stationId}`,
+                    `/api/stations/${userResponse.data.stationId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -132,17 +132,13 @@ const RefuelingDashboard = () => {
                 if (!token) throw new Error("No access token found");
 
                 const response = await axios.get<FuelPriceResponse>(
-                    `http://localhost:5000/api/fuel-prices/getfuelprice?stationId=${userData.stationId}&fuelType=${vehicleDetails.fuelType}`,
+                    `/api/fuel-prices/getfuelprice?stationId=${userData.stationId}&fuelType=${vehicleDetails.fuelType}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
                     }
                 );
-                // console.log(`my res:${response.data.price}`);
-                // console.log(
-                //   `stationId:${userData}, fueltype:${vehicleDetails.fuelType}`
-                // );
                 if (response.data) {
                     setUnitPrice(response.data.price);
                 } else {
@@ -182,7 +178,7 @@ const RefuelingDashboard = () => {
 
             // Step 1: Fetch vehicle details using the plate number
             const vehicleResponse = await axios.get<VehicleDetails>(
-                `http://localhost:5000/api/vehicles/plate/${encodedPlate}`,
+                `/api/vehicles/plate/${encodedPlate}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -197,7 +193,7 @@ const RefuelingDashboard = () => {
 
             // Step 3: Fetch driver information using the vehicleId
             const driverResponse = await axios.get(
-                `http://localhost:5000/api/drivers/vehicle/${vehicleId}`,
+                `/api/drivers/vehicle/${vehicleId}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -219,7 +215,7 @@ const RefuelingDashboard = () => {
 
             // Fetch transactions for the vehicle (if needed)
             const transactionsResponse = await axios.get<Transaction[]>(
-                `http://localhost:5000/api/fuel-transactions/vehicle/${encodedPlate}`,
+                `/api/fuel-transactions/vehicle/${encodedPlate}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -265,7 +261,7 @@ const RefuelingDashboard = () => {
         const formattedPlate = plateNumber.trim().replace(/\s+/g, " ");
         const encodedPlate = encodeURIComponent(formattedPlate);
         const vehicleResponse = await axios.get<VehicleDetails>(
-            `http://localhost:5000/api/vehicles/plate/${encodedPlate}`,
+            `/api/vehicles/plate/${encodedPlate}`,
             {
                 headers: { Authorization: `Bearer ${token}` },
             }
@@ -278,7 +274,7 @@ const RefuelingDashboard = () => {
         // Step 2: Extract vehicleId from the vehicle details
         const vehicleId = vehicleResponse.data.id;
         const driverResponse = await axios.get(
-            `http://localhost:5000/api/drivers/vehicle/${vehicleId}`,
+            `/api/drivers/vehicle/${vehicleId}`,
             {
                 headers: { Authorization: `Bearer ${token}` },
             }
@@ -296,7 +292,7 @@ const RefuelingDashboard = () => {
 
             // Record the transaction
             await axios.post(
-                "http://localhost:5000/api/fuel-transactions/record",
+                "/api/fuel-transactions/record",
                 {
                     stationId: userData.stationId,
                     vehiclePlateNumber: plateNumber.trim(),
