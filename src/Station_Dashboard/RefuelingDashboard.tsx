@@ -139,10 +139,6 @@ const RefuelingDashboard = () => {
             },
           }
         );
-        // console.log(`my res:${response.data.price}`);
-        // console.log(
-        //   `stationId:${userData}, fueltype:${vehicleDetails.fuelType}`
-        // );
         if (response.data) {
           setUnitPrice(response.data.price);
         } else {

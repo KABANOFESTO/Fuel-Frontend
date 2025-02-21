@@ -99,7 +99,7 @@ const VehicleManagement: React.FC = () => {
             }
 
             // Validate fuel type
-            if (!['Diesel', 'Petrol'].includes(formData.fuelType)) {
+            if (!['diesel', 'petrol'].includes(formData.fuelType)) {
                 alert('Please select a valid fuel type');
                 return;
             }
@@ -243,7 +243,7 @@ const VehicleManagement: React.FC = () => {
                                     <td>{vehicle.plateNumber}</td>
                                     <td>{vehicle.model}</td>
                                     <td>
-                                        <span className={`badge ${vehicle.fuelType === 'Petrol' ? 'bg-success' : 'bg-info'}`}>
+                                        <span className={`badge ${vehicle.fuelType === 'petrol' ? 'bg-success' : 'bg-info'}`}>
                                             {vehicle.fuelType}
                                         </span>
                                     </td>
@@ -316,8 +316,8 @@ const VehicleManagement: React.FC = () => {
                                             required
                                         >
                                             <option value="">Select fuel type</option>
-                                            <option value="Diesel">Diesel</option>
-                                            <option value="Petrol">Petrol</option>
+                                            <option value="diesel">diesel</option>
+                                            <option value="petrol">petrol</option>
                                         </select>
                                     </div>
                                 </div>
