@@ -219,7 +219,7 @@ const VehicleRefuelingValidation: React.FC = () => {
                                                 <td>{transaction.Vehicle.plateNumber}</td>
                                                 <td>{transaction.Driver.name}</td>
                                                 <td>{transaction.Station.name}</td>
-                                                <td className={`text-${transaction.fuel_type === 'Petrol' ? 'success' : 'info'}`}>
+                                                <td className={`text-${transaction.fuel_type === 'petrol' || 'diesel'? 'success' : 'info'}`}>
                                                     {transaction.fuel_type}
                                                 </td>
                                                 <td>{transaction.total_litres}</td>

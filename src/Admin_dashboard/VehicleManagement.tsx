@@ -208,8 +208,8 @@ const VehicleManagement: React.FC = () => {
 
     return (
         <div className="container py-4">
-            <header className="d-flex justify-content-between align-items-center mb-4">
-                <div className="d-flex gap-2 w-50">
+            <header className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+                <div className="d-flex flex-column flex-md-row gap-2 w-100 w-md-50">
                     <input
                         type="text"
                         className="form-control"
@@ -222,11 +222,13 @@ const VehicleManagement: React.FC = () => {
                         Search
                     </button>
                 </div>
-                <button className="btn btn-primary" onClick={toggleModal}>+ Add New Vehicle</button>
+                <button className="btn btn-primary w-100 w-md-auto" onClick={toggleModal}>
+                    + Add New Vehicle
+                </button>
             </header>
 
             <div className="card">
-                <div className="card-body">
+                <div className="card-body table-responsive">
                     <table className="table table-striped">
                         <thead>
                             <tr>
@@ -274,8 +276,8 @@ const VehicleManagement: React.FC = () => {
             </div>
 
             {isModalOpen && (
-                <div className="modal show d-block" tabIndex={-1}>
-                    <div className="modal-dialog">
+                <div className="modal show d-block" tabIndex={-1} style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">

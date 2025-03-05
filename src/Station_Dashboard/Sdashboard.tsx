@@ -49,7 +49,7 @@ const DashboardMain: React.FC = () => {
         }
 
         const data: Transaction[] = await response.json();
-        
+
         // Fetch vehicle details for each transaction
         const transactionsWithVehicles = await Promise.all(
           data.map(async (transaction) => {

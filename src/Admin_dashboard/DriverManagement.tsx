@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Edit, Trash2 } from 'react-feather';
 
 interface Driver {
   id: number;
@@ -220,16 +221,17 @@ const DriverManagement: React.FC = () => {
 
   return (
     <div className="container py-4">
-      <header className="d-flex justify-content-between align-items-center mb-4">
+      {/* Responsive Header */}
+      <header className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-4">
         <input
           type="text"
-          className="form-control w-50"
+          className="form-control w-100 w-md-50"
           placeholder="Search Driver Name"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <select
-          className="form-select w-25"
+          className="form-select w-100 w-md-25"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
@@ -237,11 +239,12 @@ const DriverManagement: React.FC = () => {
           <option>Active</option>
           <option>Inactive</option>
         </select>
-        <button className="btn btn-primary" onClick={toggleModal}>
+        <button className="btn btn-primary w-100 w-md-auto" onClick={toggleModal}>
           + Add Driver
         </button>
       </header>
 
+      {/* Driver List */}
       <div className="card">
         <div className="card-body">
           <ul className="list-group">
@@ -252,36 +255,45 @@ const DriverManagement: React.FC = () => {
               return (
                 <li
                   key={driver.id}
-                  className="list-group-item d-flex justify-content-between align-items-center"
+                  className="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center p-3"
                 >
-                  <div>
+                  {/* Driver Details */}
+                  <div className="mb-2 mb-md-0">
                     <h5 className="mb-1">{driver.name}</h5>
-                    <p className="mb-0">Email: {driver.email}</p>
-                    <p className="mb-0">Phone: {driver.phone}</p>
-                    <p className="mb-0">License: {driver.licenseNumber}</p>
-                    <p className="mb-0">
+                    <p className="mb-1 text-muted">Email: {driver.email}</p>
+                    <p className="mb-1 text-muted">Phone: {driver.phone}</p>
+                    <p className="mb-1 text-muted">License: {driver.licenseNumber}</p>
+                    <p className="mb-0 text-muted">
                       Vehicle: {assignedVehicle?.plateNumber || "Not assigned"}
                     </p>
                   </div>
-                  <div>
+
+                  {/* Actions and Status */}
+                  <div className="d-flex align-items-center gap-2">
+                    {/* Edit Button with Icon */}
                     <button
-                      className="btn btn-link p-0 me-2"
+                      className="btn btn-link p-0"
                       onClick={() => handleEdit(driver)}
+                      title="Edit"
                     >
-                      Edit
+                      <Edit size={18} className="text-primary" />
                     </button>
+
+                    {/* Delete Button with Icon */}
                     <button
-                      className="btn btn-link text-danger p-0"
+                      className="btn btn-link p-0"
                       onClick={() => handleDelete(driver.id)}
+                      title="Delete"
                     >
-                      Delete
+                      <Trash2 size={18} className="text-danger" />
                     </button>
+
+                    {/* Status Badge */}
                     <span
-                      className={`badge ${
-                        driver.status === "Active" ? "bg-success" : "bg-danger"
-                      }`}
+                      className={`badge ${driver.status === "Active" ? "bg-success" : "bg-danger"
+                        }`}
                     >
-                      ●
+                      {driver.status}
                     </span>
                   </div>
                 </li>
@@ -291,9 +303,10 @@ const DriverManagement: React.FC = () => {
         </div>
       </div>
 
+      {/* Modal for Add/Edit Driver */}
       {isModalOpen && (
-        <div className="modal show d-block" tabIndex={-1}>
-          <div className="modal-dialog">
+        <div className="modal show d-block" tabIndex={-1} style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">

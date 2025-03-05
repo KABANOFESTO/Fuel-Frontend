@@ -128,15 +128,15 @@ const UserManagement: React.FC = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h2 className="mb-4">User Management</h2>
+        <div className="container mt-3 mt-md-5">
+            <h2 className="mb-3 mb-md-4">User Management</h2>
 
             <button className="btn btn-dark mb-3" onClick={() => setIsModalOpen(true)}>
                 <Plus className="me-2" size={16} /> Add New User
             </button>
 
             <div className="card">
-                <div className="card-body">
+                <div className="card-body table-responsive">
                     <table className="table table-hover">
                         <thead>
                             <tr>
@@ -155,10 +155,10 @@ const UserManagement: React.FC = () => {
                                     <td>{user.role}</td>
                                     <td>{user.station || '-'}</td>
                                     <td>
-                                        <button className="btn btn-link" onClick={() => handleEdit(user)}>
+                                        <button className="btn btn-link p-0 me-2" onClick={() => handleEdit(user)}>
                                             <Edit size={16} />
                                         </button>
-                                        <button className="btn btn-link text-danger" onClick={() => handleDelete(user.id)}>
+                                        <button className="btn btn-link p-0 text-danger" onClick={() => handleDelete(user.id)}>
                                             <Trash2 size={16} />
                                         </button>
                                     </td>
@@ -171,7 +171,7 @@ const UserManagement: React.FC = () => {
 
             {isModalOpen && (
                 <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                    <div className="modal-dialog">
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">{isEditMode ? 'Edit User' : 'Add New User'}</h5>
@@ -202,7 +202,7 @@ const UserManagement: React.FC = () => {
                                     value={newUser.role}
                                     onChange={handleInputChange}
                                 >
-                                    <option value="admin">Admin</option> {/* Default role is 'admin' */}
+                                    <option value="admin">Admin</option>
                                     <option value="viewer">Viewer</option>
                                     <option value="station_worker">Station Worker</option>
                                 </select>
@@ -225,7 +225,9 @@ const UserManagement: React.FC = () => {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                                <button type="button" className="btn btn-primary" onClick={handleSave}><Save className="me-2" size={16} /> Save</button>
+                                <button type="button" className="btn btn-primary" onClick={handleSave}>
+                                    <Save className="me-2" size={16} /> Save
+                                </button>
                             </div>
                         </div>
                     </div>
