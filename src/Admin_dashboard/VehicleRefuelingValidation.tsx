@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Check, Calendar, Trash2, Filter, Search } from 'lucide-react';
+import { Trash2, Filter } from 'lucide-react';
 import { Card, Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -66,11 +66,11 @@ const VehicleRefuelingValidation: React.FC = () => {
     // Handle vehicle number search (keyup)
     const handleVehicleSearch = (searchTerm: string) => {
         setVehicleNumber(searchTerm);
-        
-        const filtered = transactions.filter(transaction => 
+
+        const filtered = transactions.filter(transaction =>
             transaction.Vehicle.plateNumber.toLowerCase().includes(searchTerm.toLowerCase())
         );
-        
+
         setFilteredTransactions(filtered);
         setTotalPages(Math.ceil(filtered.length / itemsPerPage));
         setCurrentPage(1);
@@ -79,12 +79,12 @@ const VehicleRefuelingValidation: React.FC = () => {
     // Handle station filter
     const handleStationFilter = (stationName: string) => {
         setStation(stationName);
-        
-        const filtered = transactions.filter(transaction => 
+
+        const filtered = transactions.filter(transaction =>
             transaction.Station.name.toLowerCase().includes(stationName.toLowerCase()) &&
             (vehicleNumber ? transaction.Vehicle.plateNumber.toLowerCase().includes(vehicleNumber.toLowerCase()) : true)
         );
-        
+
         setFilteredTransactions(filtered);
         setTotalPages(Math.ceil(filtered.length / itemsPerPage));
         setCurrentPage(1);
@@ -93,18 +93,18 @@ const VehicleRefuelingValidation: React.FC = () => {
     // Handle date filter
     const handleDateFilter = (filterDate: string) => {
         setDate(filterDate);
-        
+
         const filtered = transactions.filter(transaction => {
             const transactionDate = new Date(transaction.createdAt).toLocaleDateString();
             const filterDateFormatted = new Date(filterDate).toLocaleDateString();
-            
+
             return (
                 transactionDate === filterDateFormatted &&
                 (vehicleNumber ? transaction.Vehicle.plateNumber.toLowerCase().includes(vehicleNumber.toLowerCase()) : true) &&
                 (station ? transaction.Station.name.toLowerCase().includes(station.toLowerCase()) : true)
             );
         });
-        
+
         setFilteredTransactions(filtered);
         setTotalPages(Math.ceil(filtered.length / itemsPerPage));
         setCurrentPage(1);
@@ -114,15 +114,15 @@ const VehicleRefuelingValidation: React.FC = () => {
     const handleDeleteTransaction = async (id: number) => {
         try {
             await axios.delete(`/api/fuel-transactions/${id}`, getConfig());
-            
+
             // Remove the deleted transaction from state
             const updatedTransactions = transactions.filter(t => t.id !== id);
             setTransactions(updatedTransactions);
-            
+
             // Update filtered transactions
             const updatedFilteredTransactions = filteredTransactions.filter(t => t.id !== id);
             setFilteredTransactions(updatedFilteredTransactions);
-            
+
             alert('Transaction deleted successfully');
         } catch (error) {
             console.error('Error deleting transaction:', error);
@@ -132,7 +132,7 @@ const VehicleRefuelingValidation: React.FC = () => {
 
     // Paginate transactions
     const paginatedTransactions = filteredTransactions.slice(
-        (currentPage - 1) * itemsPerPage, 
+        (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
 
@@ -167,16 +167,16 @@ const VehicleRefuelingValidation: React.FC = () => {
                                 </div>
                             </div>
                             <div className="d-none d-md-block">
-                                <Button 
-                                    variant="outline-secondary" 
+                                <Button
+                                    variant="outline-secondary"
                                     onClick={() => setShowFilterModal(true)}
                                 >
                                     <Filter className="me-2" /> Filters
                                 </Button>
                             </div>
                             <div className="d-md-none w-100">
-                                <Button 
-                                    variant="outline-secondary" 
+                                <Button
+                                    variant="outline-secondary"
                                     className="w-100"
                                     onClick={() => setShowFilterModal(true)}
                                 >
@@ -188,7 +188,7 @@ const VehicleRefuelingValidation: React.FC = () => {
 
                     <Card className="p-3">
                         <h3 className="mb-3">Fuel Transactions</h3>
-                        
+
                         {/* Mobile Responsive Table */}
                         <div className="table-responsive">
                             <table className="table table-bordered table-hover">
@@ -226,9 +226,9 @@ const VehicleRefuelingValidation: React.FC = () => {
                                                 <td>{transaction.totalPrice} RWF</td>
                                                 <td className="text-success">Completed</td>
                                                 <td>
-                                                    <Button 
-                                                        variant="danger" 
-                                                        size="sm" 
+                                                    <Button
+                                                        variant="danger"
+                                                        size="sm"
                                                         onClick={() => handleDeleteTransaction(transaction.id)}
                                                     >
                                                         <Trash2 size={16} />
@@ -244,20 +244,20 @@ const VehicleRefuelingValidation: React.FC = () => {
                         {/* Pagination */}
                         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
                             <span className="mb-2 mb-md-0">
-                                Page {currentPage} of {totalPages} 
+                                Page {currentPage} of {totalPages}
                                 {filteredTransactions.length > 0 && ` (${filteredTransactions.length} transactions)`}
                             </span>
                             <div>
-                                <Button 
-                                    variant="outline-secondary" 
+                                <Button
+                                    variant="outline-secondary"
                                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                     disabled={currentPage === 1}
                                     className="me-2"
                                 >
                                     Previous
                                 </Button>
-                                <Button 
-                                    variant="outline-secondary" 
+                                <Button
+                                    variant="outline-secondary"
                                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                                     disabled={currentPage === totalPages}
                                 >
@@ -268,8 +268,8 @@ const VehicleRefuelingValidation: React.FC = () => {
                     </Card>
 
                     {/* Filter Modal for Mobile */}
-                    <Modal 
-                        show={showFilterModal} 
+                    <Modal
+                        show={showFilterModal}
                         onHide={() => setShowFilterModal(false)}
                         centered
                     >
@@ -279,29 +279,29 @@ const VehicleRefuelingValidation: React.FC = () => {
                         <Modal.Body>
                             <Form.Group className="mb-3">
                                 <Form.Label>Station</Form.Label>
-                                <Form.Control 
-                                    placeholder="Filter by Station" 
+                                <Form.Control
+                                    placeholder="Filter by Station"
                                     value={station}
                                     onChange={(e) => handleStationFilter(e.target.value)}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>Date</Form.Label>
-                                <Form.Control 
-                                    type="date" 
+                                <Form.Control
+                                    type="date"
                                     value={date}
                                     onChange={(e) => handleDateFilter(e.target.value)}
                                 />
                             </Form.Group>
                             <div className="d-flex justify-content-between">
-                                <Button 
-                                    variant="secondary" 
+                                <Button
+                                    variant="secondary"
                                     onClick={resetFilters}
                                 >
                                     Reset Filters
                                 </Button>
-                                <Button 
-                                    variant="primary" 
+                                <Button
+                                    variant="primary"
                                     onClick={() => setShowFilterModal(false)}
                                 >
                                     Apply
