@@ -27,9 +27,9 @@ interface AuthState {
     isAuthenticated: boolean;
     authChecked: boolean;
 }
-interface FuelPriceResponse {
-    price: number;
-}
+// interface FuelPriceResponse {
+//     price: number;
+// }
 
 // API configuration
 const API_BASE_URL = '';
@@ -129,7 +129,6 @@ const StationCard: React.FC<StationCardProps> = ({ station, onEdit, onDelete }) 
         </div>
     </div>
 );
-
 const StationManagement: React.FC = () => {
     const [stations, setStations] = useState<Station[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -200,8 +199,7 @@ const StationManagement: React.FC = () => {
         try {
             const response = await axiosInstance.get('/api/stations/all');
             const stationsWithPrices = await Promise.all(response.data.map(async (station: Station) => {
-                const petrolPrice = await fetchFuelPrice(station.id!);
-                const dieselPrice = await fetchFuelPrice(station.id!);
+                const { petrolPrice, dieselPrice } = await fetchFuelPrice(station.id!);
                 return { ...station, petrolPrice, dieselPrice };
             }));
             setStations(stationsWithPrices);
@@ -300,15 +298,34 @@ const StationManagement: React.FC = () => {
     //     }
     // );
 
-    const fetchFuelPrice = async (stationId: number): Promise<number | null> => {
+    const fetchFuelPrice = async (stationId: number): Promise<{ petrolPrice: number | null; dieselPrice: number | null }> => {
         try {
-            const response = await axiosInstance.get<FuelPriceResponse>(
-                `/api/fuel-prices/station/${stationId}}`
-            );
-            return response.data.price;
+            const response = await axiosInstance.get<Array<{
+                id: number;
+                fuelType: string;
+                price: string;
+                stationId: number;
+                createdAt: string;
+                updatedAt: string;
+            }>>(`/api/fuel-prices/station/${stationId}`);
+    
+            // Initialize prices as null
+            let petrolPrice: number | null = null;
+            let dieselPrice: number | null = null;
+    
+            // Extract petrol and diesel prices from the response
+            response.data.forEach((item) => {
+                if (item.fuelType === 'petrol') {
+                    petrolPrice = parseFloat(item.price); // Convert string to number
+                } else if (item.fuelType === 'diesel') {
+                    dieselPrice = parseFloat(item.price); // Convert string to number
+                }
+            });
+    
+            return { petrolPrice, dieselPrice };
         } catch (err) {
-            console.error(`Error fetching price for station ${stationId}:`, err);
-            return null;
+            console.error(`Error fetching fuel prices for station ${stationId}:`, err);
+            return { petrolPrice: null, dieselPrice: null };
         }
     };
 
