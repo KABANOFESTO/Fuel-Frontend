@@ -174,7 +174,7 @@ const ReportMain = () => {
                             <Fuel className="me-3 text-success" size={24} />
                             <div>
                                 <h6 className="text-secondary mb-0">Total Volume</h6>
-                                <h4 className="fw-bold">{filteredTransactions.reduce((sum, t) => sum + t.total_litres, 0)} L</h4>
+                                <h4 className="fw-bold">{filteredTransactions.reduce((sum, t) => sum + (+t.total_litres), 0)} L</h4>
                             </div>
                         </Card.Body>
                     </Card>
@@ -185,7 +185,7 @@ const ReportMain = () => {
                             <Calendar className="me-3 text-info" size={24} />
                             <div>
                                 <h6 className="text-secondary mb-0">Total Amount</h6>
-                                <h4 className="fw-bold">{filteredTransactions.reduce((sum, t) => sum + t.totalPrice, 0)} RWF</h4>
+                                <h4 className="fw-bold">{filteredTransactions.reduce((sum, t) => sum + (+t.totalPrice), 0)} RWF</h4>
                             </div>
                         </Card.Body>
                     </Card>
