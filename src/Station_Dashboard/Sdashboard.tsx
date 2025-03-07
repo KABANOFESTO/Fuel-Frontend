@@ -73,17 +73,17 @@ const DashboardMain: React.FC = () => {
             }
           })
         );
-
         setTransactions(transactionsWithVehicles);
 
         // Calculate totals
         const totalRefuels = transactionsWithVehicles.length;
         const totalDiesel = transactionsWithVehicles
           .filter((transaction) => transaction.fuel_type.toLowerCase() === "diesel")
-          .reduce((sum, transaction) => sum + (transaction.total_litres || 0), 0);
+          .reduce((sum, transaction) => sum + (+transaction.total_litres || 0), 0);
+
         const totalPetrol = transactionsWithVehicles
           .filter((transaction) => transaction.fuel_type.toLowerCase() === "petrol")
-          .reduce((sum, transaction) => sum + (transaction.total_litres || 0), 0);
+          .reduce((sum, transaction) => sum + (+transaction.total_litres || 0), 0);
 
         setTotalRefuels(totalRefuels);
         setTotalDieselLiters(totalDiesel);
