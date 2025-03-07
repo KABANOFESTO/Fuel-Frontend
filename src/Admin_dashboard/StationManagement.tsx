@@ -252,14 +252,16 @@ const StationManagement: React.FC = () => {
     const handleSetPrice = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+
         try {
-            // Assuming `priceFormData` contains the `id` of the fuel price to be updated
-            const { stationId, ...rest } = priceFormData;
+            if (priceFormData.stationId) {
+                // Update existing price
+                await axiosInstance.put(`/api/fuel-prices/update/${priceFormData.stationId}`, priceFormData);
+            } else {
+                // Set a new price
+                await axiosInstance.post('/api/fuel-prices/setPrice', priceFormData);
+            }
 
-            // Use PUT request to update the fuel price
-            await axiosInstance.put(`/api/fuel-prices/update/${stationId}`, rest);
-
-            // Close the modal and reset the form
             setIsPriceModalOpen(false);
             resetPriceForm();
         } catch (err) {
