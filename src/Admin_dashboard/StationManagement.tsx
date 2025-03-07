@@ -16,7 +16,6 @@ interface StationCardProps {
 }
 
 interface PriceFormData {
-    id?: number;
     stationId: number;
     fuelType: string;
     price: number;
@@ -255,10 +254,10 @@ const StationManagement: React.FC = () => {
         setLoading(true);
         try {
             // Assuming `priceFormData` contains the `id` of the fuel price to be updated
-            const { id, ...rest } = priceFormData;
+            const { stationId, ...rest } = priceFormData;
 
             // Use PUT request to update the fuel price
-            await axiosInstance.put(`/api/fuel-prices/update/${id}`, rest);
+            await axiosInstance.put(`/api/fuel-prices/update/${stationId}`, rest);
 
             // Close the modal and reset the form
             setIsPriceModalOpen(false);
