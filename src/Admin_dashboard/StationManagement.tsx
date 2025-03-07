@@ -7,6 +7,8 @@ interface Station {
     id?: number;
     name: string;
     location: string;
+    petrolPrice?: number;
+    dieselPrice?: number;
 }
 
 interface StationCardProps {
@@ -24,6 +26,9 @@ interface PriceFormData {
 interface AuthState {
     isAuthenticated: boolean;
     authChecked: boolean;
+}
+interface FuelPriceResponse {
+    price: number;
 }
 
 // API configuration
@@ -50,6 +55,7 @@ axiosInstance.interceptors.request.use((config) => {
 }, (error) => {
     return Promise.reject(error);
 });
+
 
 // Axios response interceptor
 axiosInstance.interceptors.response.use(
@@ -95,6 +101,12 @@ const StationCard: React.FC<StationCardProps> = ({ station, onEdit, onDelete }) 
                     <h5 className="card-title">{station.name}</h5>
                     <p className="card-text text-muted">
                         <i className="bi bi-geo-alt"></i> {station.location}
+                    </p>
+                    <p className="card-text">
+                        <strong>Petrol Price:</strong> {station.petrolPrice ? `$${station.petrolPrice}` : 'N/A'}
+                    </p>
+                    <p className="card-text">
+                        <strong>Diesel Price:</strong> {station.dieselPrice ? `$${station.dieselPrice}` : 'N/A'}
                     </p>
                 </div>
 
@@ -187,7 +199,12 @@ const StationManagement: React.FC = () => {
         setLoading(true);
         try {
             const response = await axiosInstance.get('/api/stations/all');
-            setStations(response.data);
+            const stationsWithPrices = await Promise.all(response.data.map(async (station: Station) => {
+                const petrolPrice = await fetchFuelPrice(station.id!, 'petrol');
+                const dieselPrice = await fetchFuelPrice(station.id!, 'diesel');
+                return { ...station, petrolPrice, dieselPrice };
+            }));
+            setStations(stationsWithPrices);
             setError('');
         } catch (err) {
             handleError(err);
@@ -233,6 +250,8 @@ const StationManagement: React.FC = () => {
         }
     };
 
+
+
     const handleDeleteStation = async (id: number) => {
         if (!window.confirm('Are you sure you want to delete this station?')) {
             return;
@@ -270,7 +289,28 @@ const StationManagement: React.FC = () => {
             setLoading(false);
         }
     };
+    // const Token = localStorage.getItem('accessToken');
+    // const stationId = stations
+    // const responsee = await axios.get<FuelPriceResponse>(
+    //     `/api/fuel-prices/station/${stationId}`,
+    //     {
+    //         headers: {
+    //             Authorization: `Bearer ${Token}`,
+    //         },
+    //     }
+    // );
 
+    const fetchFuelPrice = async (stationId: number, fuelType: string): Promise<number | null> => {
+        try {
+            const response = await axiosInstance.get<FuelPriceResponse>(
+                `/api/fuel-prices/station/${stationId}?fuelType=${fuelType}`
+            );
+            return response.data.price;
+        } catch (err) {
+            console.error(`Error fetching ${fuelType} price for station ${stationId}:`, err);
+            return null;
+        }
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

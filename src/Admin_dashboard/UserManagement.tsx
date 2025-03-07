@@ -97,7 +97,7 @@ const UserManagement: React.FC = () => {
             fetchUsers();
             setIsModalOpen(false);
             setIsEditMode(false);
-            setNewUser({ name: '', email: '', role: 'admin', password: 'Password1@', stationId: '' }); // Reset to 'admin'
+            setNewUser({ name: '', email: '', role: 'admin', password: 'DefaultPass123@', stationId: '' }); // Reset to 'admin'
         } catch (error) {
             console.error('Error saving user:', error);
         }
