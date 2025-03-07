@@ -241,7 +241,9 @@ const RefuelingDashboard = () => {
     };
 
     // Handle recording a transaction
-    const handleRecordTransaction = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleRecordTransaction = async (
+        e: React.FormEvent<HTMLFormElement>
+    ) => {
         e.preventDefault();
 
         // Validate quantity
@@ -249,70 +251,52 @@ const RefuelingDashboard = () => {
             setError("Please enter a valid quantity greater than 0.");
             return;
         }
-
+        console.log(
+            `${userData?.stationId}, ${vehicleDetails}, ${vehicleDetails?.driverId}`
+        );
+        // test record
         const token = localStorage.getItem("accessToken");
         if (!token) throw new Error("No access token found");
 
         const formattedPlate = plateNumber.trim().replace(/\s+/g, " ");
         const encodedPlate = encodeURIComponent(formattedPlate);
+        const vehicleResponse = await axios.get<VehicleDetails>(
+            `/api/vehicles/plate/${encodedPlate}`,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
 
+        if (!vehicleResponse.data || !vehicleResponse.data.id) {
+            throw new Error("Invalid vehicle data received");
+        }
+
+        // Step 2: Extract vehicleId from the vehicle details
+        const vehicleId = vehicleResponse.data.id;
+        const driverResponse = await axios.get(
+            `/api/drivers/vehicle/${vehicleId}`,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+        // Validate required information
+        if (!userData?.stationId || !driverResponse || !driverResponse.data.id) {
+            setError("Missing required information. Please try again.");
+            return;
+        }
+
+        setLoading(true);
         try {
-            // Step 1: Get vehicle details
-            const vehicleResponse = await axios.get<VehicleDetails>(
-                `/api/vehicles/plate/${encodedPlate}`,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
+            const token = localStorage.getItem("accessToken");
+            if (!token) throw new Error("No access token found");
 
-            if (!vehicleResponse.data || !vehicleResponse.data.id) {
-                throw new Error("Invalid vehicle data received");
-            }
-
-            const vehicleId = vehicleResponse.data.id;
-
-            // Step 2: Get driver details
-            const driverResponse = await axios.get(
-                `/api/drivers/vehicle/${vehicleId}`,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-
-            if (!userData?.stationId || !driverResponse || !driverResponse.data.id) {
-                setError("Missing required information. Please try again.");
-                return;
-            }
-
-            // Step 3: Fetch existing fuel transactions for the vehicle
-            const transactionsResponse = await axios.get(
-                `/api/fuel-transactions/vehicle/${vehicleId}`,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-
-            // Check if the vehicle has already been refueled today
-            const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-            const hasRefueledToday = transactionsResponse.data.some((transaction: any) => {
-                const transactionDate = new Date(transaction.transactionDate).toISOString().split('T')[0];
-                return transactionDate === today;
-            });
-
-            if (hasRefueledToday) {
-                setError("This vehicle has already been refueled. Please wait for the next day.");
-                return;
-            }
-
-            setLoading(true);
-
-            // Step 4: Record the transaction
+            // Record the transaction
             await axios.post(
                 "/api/fuel-transactions/record",
                 {
                     stationId: userData.stationId,
                     vehiclePlateNumber: plateNumber.trim(),
-                    driverId: driverResponse.data.id,
+                    driverId: driverResponse.data.id, // Use driverId from vehicleDetails
                     fuel_type: vehicleDetails?.fuelType,
                     total_litres: parseFloat(quantity),
                 },
@@ -325,7 +309,7 @@ const RefuelingDashboard = () => {
             );
 
             // Success handling
-            setSuccess("🚀 Fuel transaction recorded successfully! 🎉");
+            setSuccess("Fuel transaction recorded successfully!");
             setError("");
             setQuantity("");
 
