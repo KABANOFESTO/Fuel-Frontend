@@ -144,8 +144,8 @@ const Report = () => {
     return (
         <div className="container py-4">
             <div className="d-flex justify-content-center gap-3 mb-4">
-                <Button variant={activeTab === 'Fuel Usage' ? 'primary' : 'outline-primary'} onClick={() => setActiveTab('Fuel Usage')}>Fuel Usage</Button>
-                <Button variant={activeTab === 'Station Analysis' ? 'primary' : 'outline-primary'} onClick={() => setActiveTab('Station Analysis')}>Station Analysis</Button>
+                {/* <Button variant={activeTab === 'Fuel Usage' ? 'primary' : 'outline-primary'} onClick={() => setActiveTab('Fuel Usage')}>Fuel Usage</Button> */}
+                {/* <Button variant={activeTab === 'Station Analysis' ? 'primary' : 'outline-primary'} onClick={() => setActiveTab('Station Analysis')}>Station Analysis</Button> */}
             </div>
             {activeTab === 'Fuel Usage' ? (
                 <>
