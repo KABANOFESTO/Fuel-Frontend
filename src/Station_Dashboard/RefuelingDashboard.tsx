@@ -271,21 +271,7 @@ const RefuelingDashboard = () => {
 
             const vehicleId = vehicleResponse.data.id;
 
-            // Step 2: Check if the vehicle has already been refueled today
-            const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-            const refuelCheckResponse = await axios.get(
-                `/api/fuel-transactions/vehicle/${vehicleId}/date/${today}`,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-
-            if (refuelCheckResponse.data && refuelCheckResponse.data.length > 0) {
-                setError("This vehicle has already been refueled. Please wait for the next day.");
-                return;
-            }
-
-            // Step 3: Get driver details
+            // Step 2: Get driver details
             const driverResponse = await axios.get(
                 `/api/drivers/vehicle/${vehicleId}`,
                 {
@@ -295,6 +281,26 @@ const RefuelingDashboard = () => {
 
             if (!userData?.stationId || !driverResponse || !driverResponse.data.id) {
                 setError("Missing required information. Please try again.");
+                return;
+            }
+
+            // Step 3: Fetch existing fuel transactions for the vehicle
+            const transactionsResponse = await axios.get(
+                `/api/fuel-transactions/vehicle/${vehicleId}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            // Check if the vehicle has already been refueled today
+            const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+            const hasRefueledToday = transactionsResponse.data.some((transaction: any) => {
+                const transactionDate = new Date(transaction.transactionDate).toISOString().split('T')[0];
+                return transactionDate === today;
+            });
+
+            if (hasRefueledToday) {
+                setError("This vehicle has already been refueled. Please wait for the next day.");
                 return;
             }
 
@@ -318,10 +324,12 @@ const RefuelingDashboard = () => {
                 }
             );
 
+            // Success handling
             setSuccess("🚀 Fuel transaction recorded successfully! 🎉");
             setError("");
             setQuantity("");
 
+            // Refresh transactions by calling handleSearch again
             handleSearch();
         } catch (error) {
             console.error("Error recording transaction:", error);
