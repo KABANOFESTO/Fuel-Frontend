@@ -25,6 +25,7 @@ const DashboardMain: React.FC = () => {
   const [totalPetrolLiters, setTotalPetrolLiters] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [transactionsPerPage] = useState<number>(5);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const fetchTransactionsAndVehicles = async () => {
@@ -98,10 +99,15 @@ const DashboardMain: React.FC = () => {
     fetchTransactionsAndVehicles();
   }, []);
 
+  // Filter transactions based on search term
+  const filteredTransactions = transactions.filter((transaction) =>
+    transaction.Vehicle?.plateNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   // Pagination logic
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
-  const currentTransactions = transactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
+  const currentTransactions = filteredTransactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -148,7 +154,11 @@ const DashboardMain: React.FC = () => {
           <h6 className="fw-semibold mb-3">Vehicle Search</h6>
           <Form>
             <Form.Group className="input-group">
-              <Form.Control type="text" placeholder="Enter Vehicle Plate" />
+              <Form.Control
+                type="text"
+                placeholder="Enter Vehicle Plate"
+                onKeyUp={(e) => setSearchTerm(e.currentTarget.value)}
+              />
               <span className="input-group-text">
                 <FaSearch />
               </span>
@@ -180,7 +190,7 @@ const DashboardMain: React.FC = () => {
                 onClick={() => setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev))}
                 disabled={currentPage === 1}
               />
-              {Array.from({ length: Math.ceil(transactions.length / transactionsPerPage) }, (_, index) => (
+              {Array.from({ length: Math.ceil(filteredTransactions.length / transactionsPerPage) }, (_, index) => (
                 <Pagination.Item
                   key={index + 1}
                   active={index + 1 === currentPage}
@@ -192,10 +202,10 @@ const DashboardMain: React.FC = () => {
               <Pagination.Next
                 onClick={() =>
                   setCurrentPage((prev) =>
-                    prev < Math.ceil(transactions.length / transactionsPerPage) ? prev + 1 : prev
+                    prev < Math.ceil(filteredTransactions.length / transactionsPerPage) ? prev + 1 : prev
                   )
                 }
-                disabled={currentPage === Math.ceil(transactions.length / transactionsPerPage)}
+                disabled={currentPage === Math.ceil(filteredTransactions.length / transactionsPerPage)}
               />
             </Pagination>
           </div>
