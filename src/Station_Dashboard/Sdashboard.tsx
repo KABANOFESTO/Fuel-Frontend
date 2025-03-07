@@ -168,7 +168,7 @@ const DashboardMain: React.FC = () => {
                   <h6 className="mb-0">{transaction.Vehicle?.plateNumber || 'Unknown'}</h6>
                   <small className="text-muted">{transaction.total_litres} Liters - {transaction.fuel_type}</small>
                 </div>
-                <small className="text-muted">{new Date(transaction.createdAt).toLocaleTimeString()}</small>
+                <small className="text-muted">{new Date(transaction.createdAt).toLocaleString()}</small>
               </div>
             ))}
           </div>
