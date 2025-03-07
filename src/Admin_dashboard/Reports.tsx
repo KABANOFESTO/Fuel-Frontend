@@ -56,7 +56,7 @@ interface FuelTransaction {
 }
 
 const Report = () => {
-    const [activeTab, setActiveTab] = useState('Fuel Usage');
+    const [activeTab, ] = useState('Fuel Usage');
     const [, setFuelTransactions] = useState<FuelTransaction[]>([]);
     const [totalLiters, setTotalLiters] = useState(0);
     const [totalAmount, setTotalAmount] = useState(0);
