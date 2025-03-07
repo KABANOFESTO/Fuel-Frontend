@@ -318,12 +318,10 @@ const RefuelingDashboard = () => {
                 }
             );
 
-            // Success handling
             setSuccess("🚀 Fuel transaction recorded successfully! 🎉");
             setError("");
             setQuantity("");
 
-            // Refresh transactions by calling handleSearch again
             handleSearch();
         } catch (error) {
             console.error("Error recording transaction:", error);
