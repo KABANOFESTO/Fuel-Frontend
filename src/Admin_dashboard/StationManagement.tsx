@@ -103,10 +103,10 @@ const StationCard: React.FC<StationCardProps> = ({ station, onEdit, onDelete }) 
                         <i className="bi bi-geo-alt"></i> {station.location}
                     </p>
                     <p className="card-text">
-                        <strong>Petrol Price:</strong> {station.petrolPrice ? `$${station.petrolPrice}` : 'N/A'}
+                        <strong>Petrol Price:</strong> {station.petrolPrice ? `${station.petrolPrice}RWF` : 'N/A'}
                     </p>
                     <p className="card-text">
-                        <strong>Diesel Price:</strong> {station.dieselPrice ? `$${station.dieselPrice}` : 'N/A'}
+                        <strong>Diesel Price:</strong> {station.dieselPrice ? `${station.dieselPrice}RWF` : 'N/A'}
                     </p>
                 </div>
 
@@ -308,11 +308,11 @@ const StationManagement: React.FC = () => {
                 createdAt: string;
                 updatedAt: string;
             }>>(`/api/fuel-prices/station/${stationId}`);
-    
+
             // Initialize prices as null
             let petrolPrice: number | null = null;
             let dieselPrice: number | null = null;
-    
+
             // Extract petrol and diesel prices from the response
             response.data.forEach((item) => {
                 if (item.fuelType === 'petrol') {
@@ -321,7 +321,7 @@ const StationManagement: React.FC = () => {
                     dieselPrice = parseFloat(item.price); // Convert string to number
                 }
             });
-    
+
             return { petrolPrice, dieselPrice };
         } catch (err) {
             console.error(`Error fetching fuel prices for station ${stationId}:`, err);
