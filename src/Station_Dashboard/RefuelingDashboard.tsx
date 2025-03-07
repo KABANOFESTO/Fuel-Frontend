@@ -226,8 +226,10 @@ const RefuelingDashboard = () => {
 
             if (transactionsResponse.data.length > 0) {
                 setSuccess("Vehicle found with previous refueling records.");
+                setShowDriverInfo(false);
             } else {
                 setSuccess("Vehicle found. No previous refueling records.");
+                setShowDriverInfo(true);
             }
         } catch (error) {
             console.error("Error fetching vehicle or driver data:", error);
