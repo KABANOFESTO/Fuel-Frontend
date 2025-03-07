@@ -16,6 +16,7 @@ interface StationCardProps {
 }
 
 interface PriceFormData {
+    id?: number;
     stationId: number;
     fuelType: string;
     price: number;
@@ -97,6 +98,7 @@ const StationCard: React.FC<StationCardProps> = ({ station, onEdit, onDelete }) 
                         <i className="bi bi-geo-alt"></i> {station.location}
                     </p>
                 </div>
+
                 <div>
                     <Button
                         variant="outline-primary"
@@ -251,8 +253,16 @@ const StationManagement: React.FC = () => {
     const handleSetPrice = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+
         try {
-            await axiosInstance.post('/api/fuel-prices/setPrice', priceFormData);
+            if (priceFormData.id) {
+                // Update existing price
+                await axiosInstance.put(`/api/fuel-prices/update/${priceFormData.id}`, priceFormData);
+            } else {
+                // Set a new price
+                await axiosInstance.post('/api/fuel-prices/setPrice', priceFormData);
+            }
+
             setIsPriceModalOpen(false);
             resetPriceForm();
         } catch (err) {
@@ -261,6 +271,7 @@ const StationManagement: React.FC = () => {
             setLoading(false);
         }
     };
+
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
