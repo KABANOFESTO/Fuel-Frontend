@@ -200,8 +200,8 @@ const StationManagement: React.FC = () => {
         try {
             const response = await axiosInstance.get('/api/stations/all');
             const stationsWithPrices = await Promise.all(response.data.map(async (station: Station) => {
-                const petrolPrice = await fetchFuelPrice(station.id!, 'petrol');
-                const dieselPrice = await fetchFuelPrice(station.id!, 'diesel');
+                const petrolPrice = await fetchFuelPrice(station.id!);
+                const dieselPrice = await fetchFuelPrice(station.id!);
                 return { ...station, petrolPrice, dieselPrice };
             }));
             setStations(stationsWithPrices);
@@ -300,14 +300,14 @@ const StationManagement: React.FC = () => {
     //     }
     // );
 
-    const fetchFuelPrice = async (stationId: number, fuelType: string): Promise<number | null> => {
+    const fetchFuelPrice = async (stationId: number): Promise<number | null> => {
         try {
             const response = await axiosInstance.get<FuelPriceResponse>(
-                `/api/fuel-prices/station/${stationId}?fuelType=${fuelType}`
+                `/api/fuel-prices/station/${stationId}}`
             );
             return response.data.price;
         } catch (err) {
-            console.error(`Error fetching ${fuelType} price for station ${stationId}:`, err);
+            console.error(`Error fetching price for station ${stationId}:`, err);
             return null;
         }
     };
